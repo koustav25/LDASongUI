@@ -1,0 +1,54 @@
+.container {
+  margin-top: 20px;
+}
+
+.form-check-label {
+  display: inline;
+  margin-left: 10px;
+}
+
+.genres, .topics {
+  margin-top: 10px;
+}
+
+.list-group-item {
+  cursor: pointer;
+  user-select: none;
+}
+
+.list-group-item:hover {
+  background-color: #f0f0f0; /* Change to desired hover color */
+}
+
+.list-group-item.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.play-button {
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 20px solid #28a745; /* Green color */
+  cursor: pointer;
+  display: inline-block;
+  margin: 2px; /* Adjust margin as needed */
+}
+
+.play-button:hover {
+  border-left-color: #218838; /* Darker green for hover effect */
+}
+
+.selected {
+  font-weight: bold;
+  color: green;
+}
+
+button {
+  margin: 5px;
+}
+
+
+
+

@@ -25,6 +25,11 @@ export function app(): express.Express {
     index: 'index.html',
   }));
 
+  server.use((req, res, next) => {
+    res.setTimeout(60000); // 60 seconds timeout
+    next();
+  });
+
   // All regular routes use the Angular engine
   server.get('**', (req, res, next) => {
     const { protocol, originalUrl, baseUrl, headers } = req;
@@ -43,6 +48,8 @@ export function app(): express.Express {
 
   return server;
 }
+
+
 
 function run(): void {
   const port = process.env['PORT'] || 4000;

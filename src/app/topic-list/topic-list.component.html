@@ -1,0 +1,135 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-check mb-3">
+        <input type="checkbox" class="form-check-input" id="showGenresCheckbox" [(ngModel)]="showGenres">
+        <label class="form-check-label" for="showGenresCheckbox">
+          Show Genres
+        </label>
+      </div>
+      <div class="genres" *ngIf="showGenres">
+        <h2>Genres</h2>
+        <input id="genreTypeahead" type="text" class="form-control mb-2"
+               [(ngModel)]="genreSearch"
+               (input)="filterGenres()"
+               placeholder="Type to search genres...">
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let genre of getPaginatedGenres()"
+              [class.active]="isSelectedGenre(genre)"
+              (click)="onGenreClick(genre)">
+            {{ genre }}
+          </li>
+        </ul>
+        <div class="pagination-controls">
+          <button class="btn btn-secondary btn-sm" (click)="onGenresPageChange(genresPage - 1)" [disabled]="genresPage === 1">Previous</button>
+          <span>Page {{ genresPage }} of {{ totalGenresPages }}</span>
+          <button class="btn btn-secondary btn-sm" (click)="onGenresPageChange(genresPage + 1)" [disabled]="genresPage === totalGenresPages">Next</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="d-flex align-items-center mb-3">
+        <div class="form-check" style="margin-right: 20px;">
+          <input type="checkbox" class="form-check-input" id="showTopicsCheckbox" [(ngModel)]="showTopics">
+          <label class="form-check-label" for="showTopicsCheckbox">
+            Show Topics
+          </label>
+        </div>
+        <button class="btn btn-primary" style="margin-left: 20px;" (click)="updateSongs()">Generate Songs</button>
+      </div>
+      <div class="topics" *ngIf="showTopics">
+        <h2>Topics</h2>
+        <input id="topicTypeahead" type="text" class="form-control mb-2"
+               [(ngModel)]="topicSearch"
+               (input)="filterTopics()"
+               placeholder="Type to search topics...">
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let topic of getPaginatedTopics()"
+              [class.active]="isSelectedTopic(topic)"
+              (click)="onTopicClick(topic)">
+            {{ topic }}
+          </li>
+        </ul>
+        <div class="pagination-controls">
+          <button class="btn btn-secondary btn-sm" (click)="onTopicsPageChange(topicsPage - 1)" [disabled]="topicsPage === 1">Previous</button>
+          <span>Page {{ topicsPage }} of {{ totalTopicsPages }}</span>
+          <button class="btn btn-secondary btn-sm" (click)="onTopicsPageChange(topicsPage + 1)" [disabled]="topicsPage === totalTopicsPages">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-12">
+      <h2>Song Details</h2>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Song</th>
+          <th>Artist</th>
+          <th>Album</th>
+          <th>Play</th>
+          <th>Like</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let song of songs">
+          <td>{{ song.song }}</td>
+          <td>{{ song.artist }}</td>
+          <td>{{ song.album_name }}</td>
+          <td>
+            <a *ngIf="song.spotify_url" class="play-button" (click)="playSong(song.spotify_url)"></a>
+          </td>
+          <td>
+            <button class="btn btn-link" (click)="likeSong(song)">
+              <i class="fas fa-thumbs-up"></i>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row mt-4" *ngIf="likedSongs.length > 0">
+    <div class="col-12">
+      <h2>Liked Songs</h2>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Song</th>
+          <th>Artist</th>
+          <th>Album</th>
+          <th>Play</th>
+          <th>Dislike</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let song of likedSongs">
+          <td>{{ song.song }}</td>
+          <td>{{ song.artist }}</td>
+          <td>{{ song.album_name }}</td>
+          <td>
+            <a *ngIf="song.spotify_url" class="play-button" (click)="playSong(song.spotify_url)"></a>
+          </td>
+          <td>
+            <button class="btn btn-link" (click)="dislikeSong(song)">
+              <i class="fas fa-thumbs-down"></i>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Chart Section -->
+  <div class="row mt-4" *ngIf="likedSongs.length > 0">
+    <div class="col-12">
+      <h2>Liked Songs Analysis</h2>
+      <button class="btn btn-primary mb-3" (click)="generateChart()">Generate Chart</button>
+      <canvas id="likedSongsChart"></canvas>
+    </div>
+  </div>
+</div>
